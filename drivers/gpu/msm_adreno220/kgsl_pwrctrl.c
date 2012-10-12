@@ -13,6 +13,9 @@
 #include <linux/interrupt.h>
 #include <mach/msm_iomap.h>
 #include <mach/msm_bus.h>
+#ifdef CONFIG_MACH_SHOOTER_U
+#include <mach/socinfo.h>
+#endif
 
 #include "kgsl.h"
 #include "kgsl_pwrscale.h"
@@ -24,7 +27,9 @@
 #define KGSL_PWRFLAGS_AXI_ON   2
 #define KGSL_PWRFLAGS_IRQ_ON   3
 
+#ifdef CONFIG_MACH_SHOOTER
 #define GPU_SWFI_LATENCY	3
+#endif
 #define UPDATE_BUSY_VAL		1000000
 #define UPDATE_BUSY		50
 
@@ -743,9 +748,14 @@ _sleep(struct kgsl_device *device)
 		_sleep_accounting(device);
 		kgsl_pwrctrl_clk(device, KGSL_PWRFLAGS_OFF);
 		kgsl_pwrctrl_set_state(device, KGSL_STATE_SLEEP);
-		wake_unlock(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER_U
+		if (device->idle_wakelock.name)
+#endif		
+			wake_unlock(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER
 		pm_qos_update_request(&device->pm_qos_req_dma,
 					PM_QOS_DEFAULT_VALUE);
+#endif
 		break;
 	case KGSL_STATE_SLEEP:
 	case KGSL_STATE_SLUMBER:
@@ -773,15 +783,22 @@ _slumber(struct kgsl_device *device)
 	case KGSL_STATE_SLEEP:
 		del_timer_sync(&device->idle_timer);
 		kgsl_pwrctrl_pwrlevel_change(device, KGSL_PWRLEVEL_NOMINAL);
+#ifdef CONFIG_MACH_SHOOTER
 		device->pwrctrl.restore_slumber = true;
+#endif
 		device->ftbl->suspend_context(device);
 		device->ftbl->stop(device);
+#ifdef CONFIG_MACH_SHOOTER_U
+		device->pwrctrl.restore_slumber = true;
+#endif
 		_sleep_accounting(device);
 		kgsl_pwrctrl_set_state(device, KGSL_STATE_SLUMBER);
 		if (device->idle_wakelock.name)
 			wake_unlock(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER
 		pm_qos_update_request(&device->pm_qos_req_dma,
 						PM_QOS_DEFAULT_VALUE);
+#endif
 		break;
 	case KGSL_STATE_SLUMBER:
 		break;
@@ -850,10 +867,16 @@ void kgsl_pwrctrl_wake(struct kgsl_device *device)
 		/* Re-enable HW access */
 		mod_timer(&device->idle_timer,
 				jiffies + device->pwrctrl.interval_timeout);
-		wake_lock(&device->idle_wakelock);
+
+#ifdef CONFIG_MACH_SHOOTER_U
+		if (device->idle_wakelock.name)
+#endif		
+			wake_lock(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER
 		if (device->pwrctrl.restore_slumber == false)
 			pm_qos_update_request(&device->pm_qos_req_dma,
 						GPU_SWFI_LATENCY);
+#endif
 	case KGSL_STATE_ACTIVE:
 		break;
 	default:

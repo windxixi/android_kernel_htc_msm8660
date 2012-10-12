@@ -884,7 +884,34 @@ static void insert_detect_work_func(struct work_struct *work)
 			HS_LOG("Delay check: HEADSET_UNKNOWN_MIC");
 	}
 }
+#ifdef CONFIG_MACH_SHOOTER_U
+int hs_notify_plug_event(int insert)
+{
+	HS_DBG("Headset status %d", insert);
 
+	mutex_lock(&hi->mutex_lock);
+	hi->is_ext_insert = insert;
+	mutex_unlock(&hi->mutex_lock);
+
+	cancel_delayed_work_sync(&mic_detect_work);
+	cancel_delayed_work_sync(&insert_detect_work);
+	cancel_delayed_work_sync(&remove_detect_work);
+
+	if (hi->is_ext_insert)
+		queue_delayed_work(detect_wq, &insert_detect_work,
+				   HS_JIFFIES_INSERT);
+	else {
+		if (hi->pdata.driver_flag & DRIVER_HS_MGR_OLD_AJ) {
+			queue_delayed_work(detect_wq, &remove_detect_work,
+					HS_JIFFIES_REMOVE_LONG);
+		} else {
+			queue_delayed_work(detect_wq, &remove_detect_work,
+					HS_JIFFIES_REMOVE_SHORT);
+		}
+	}
+	return 1;
+}
+#else
 int hs_notify_plug_event(int insert)
 {
 	int ret = 0;
@@ -916,6 +943,8 @@ int hs_notify_plug_event(int insert)
 	}
 	return 1;
 }
+
+#endif
 
 int hs_notify_key_event(int key_code)
 {

@@ -31,6 +31,12 @@ static void ddl_get_dec_profile_level(struct ddl_decoder_data *decoder,
 	u32 profile, u32 level);
 static void ddl_handle_enc_frame_done(struct ddl_client_context *ddl);
 
+#ifdef CONFIG_MACH_SHOOTER_U
+/* HTC_START */
+extern int mTotalErrorFrames;
+/* HTC_END */
+#endif
+
 static void ddl_fw_status_done_callback(struct ddl_context *ddl_context)
 {
 	DDL_MSG_MED("ddl_fw_status_done_callback");
@@ -406,6 +412,11 @@ static u32 ddl_decoder_seq_done_callback(struct ddl_context *ddl_context,
 				}
 				DDL_MSG_HIGH("%s : sending port reconfig\n",
 					 __func__);
+#ifdef CONFIG_MACH_SHOOTER_U
+				/* HTC_START */
+				mTotalErrorFrames = 0;
+				/* HTC_END */
+#endif				
 				ddl_context->ddl_callback(
 					VCD_EVT_IND_OUTPUT_RECONFIG,
 					VCD_S_SUCCESS, payload,

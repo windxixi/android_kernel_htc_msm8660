@@ -25,7 +25,9 @@
 #include <linux/ashmem.h>
 #include <linux/major.h>
 #include <linux/ion.h>
-
+#ifdef CONFIG_MACH_SHOOTER_U
+#include <mach/socinfo.h>
+#endif
 #include "kgsl.h"
 #include "kgsl_debugfs.h"
 #include "kgsl_cffdump.h"
@@ -526,8 +528,13 @@ void kgsl_late_resume_driver(struct early_suspend *h)
 					struct kgsl_device, display_off);
 	KGSL_PWR_WARN(device, "late resume start\n");
 	mutex_lock(&device->mutex);
+#ifdef CONFIG_MACH_SHOOTER
 	device->pwrctrl.restore_slumber = 0;
+#endif
 	kgsl_pwrctrl_wake(device);
+#ifdef CONFIG_MACH_SHOOTER_U
+	device->pwrctrl.restore_slumber = 0;
+#endif	
 	kgsl_pwrctrl_pwrlevel_change(device, KGSL_PWRLEVEL_TURBO);
 	mutex_unlock(&device->mutex);
 	kgsl_check_idle(device);
@@ -2124,9 +2131,13 @@ void kgsl_unregister_device(struct kgsl_device *device)
 	kgsl_cffdump_close(device->id);
 	kgsl_pwrctrl_uninit_sysfs(device);
 
-	wake_lock_destroy(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER_U
+	if (cpu_is_msm8x60())
+#endif	
+		wake_lock_destroy(&device->idle_wakelock);
+#ifdef CONFIG_MACH_SHOOTER
 	pm_qos_remove_request(&device->pm_qos_req_dma);
-
+#endif
 	idr_destroy(&device->context_idr);
 
 	if (device->memstore.hostptr)
@@ -2216,9 +2227,15 @@ kgsl_register_device(struct kgsl_device *device)
 	if (ret != 0)
 		goto err_close_mmu;
 
+#ifdef CONFIG_MACH_SHOOTER
 	wake_lock_init(&device->idle_wakelock, WAKE_LOCK_IDLE, device->name);
 	pm_qos_add_request(&device->pm_qos_req_dma, PM_QOS_CPU_DMA_LATENCY,
 				PM_QOS_DEFAULT_VALUE);
+#else
+	if (cpu_is_msm8x60())
+		wake_lock_init(&device->idle_wakelock,
+					   WAKE_LOCK_IDLE, device->name);
+#endif
 
 	idr_init(&device->context_idr);
 

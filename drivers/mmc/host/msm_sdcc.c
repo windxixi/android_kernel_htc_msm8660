@@ -2176,8 +2176,11 @@ msmsdcc_request(struct mmc_host *mmc, struct mmc_request *mrq)
 	 * Kick the software command timeout timer here.
 	 * Timer expires in 10 secs.
 	 */
-
+#ifdef CONFIG_MACH_SHOOTER_U
+	if (is_sd_platform(host->plat))
+#else
 	if ((is_sd_platform(host->plat)) || (is_wimax_platform(host->plat)))
+#endif
 		mod_timer(&host->req_tout_timer,
 			(jiffies + msecs_to_jiffies(5000)));
 	else

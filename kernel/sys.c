@@ -400,6 +400,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 {
 	char buffer[256];
 	int ret = 0;
+#ifdef CONFIG_MACH_SHOOTER
 	int res = 0;
 	unsigned int len;
 	char path[64];
@@ -418,7 +419,11 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 		if (!capable(CAP_SYS_BOOT))
 			return -EPERM;
 	}
-
+#else
+	/* We only trust the superuser with rebooting the system. */
+	if (!capable(CAP_SYS_BOOT))
+		return -EPERM;
+#endif
 	/* For safety, we require "magic" arguments. */
 	if (magic1 != LINUX_REBOOT_MAGIC1 ||
 	    (magic2 != LINUX_REBOOT_MAGIC2 &&

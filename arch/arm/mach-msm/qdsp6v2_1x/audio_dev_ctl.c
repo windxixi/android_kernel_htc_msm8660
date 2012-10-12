@@ -786,13 +786,22 @@ int auddev_register_evt_listner(u32 evt_id, u32 clnt_type, u32 clnt_id,
 	struct msm_snd_evt_listner *callback = NULL;
 	struct msm_snd_evt_listner *new_cb;
 
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_aud_info("%s(%d) ++\n", __func__, __LINE__);
+#endif
 	new_cb = kzalloc(sizeof(struct msm_snd_evt_listner), GFP_KERNEL);
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_aud_info("%s(%d) \n", __func__, __LINE__);
+#endif
 	if (!new_cb) {
 		pr_aud_err("No memory to add new listener node\n");
 		return -ENOMEM;
 	}
 
 	mutex_lock(&session_lock);
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_aud_info("%s(%d) \n", __func__, __LINE__);
+#endif
 	new_cb->cb_next = NULL;
 	new_cb->auddev_evt_listener = listner;
 	new_cb->evt_id = evt_id;
@@ -812,11 +821,17 @@ int auddev_register_evt_listner(u32 evt_id, u32 clnt_type, u32 clnt_id,
 				continue;
 			}
 		}
+#ifdef CONFIG_MACH_SHOOTER_U
+		pr_aud_info("%s(%d) \n", __func__, __LINE__);
+#endif
 		callback->cb_next = new_cb;
 		new_cb->cb_prev = callback;
 	}
 	event.num_listner++;
 	mutex_unlock(&session_lock);
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_aud_info("%s(%d) --\n", __func__, __LINE__);
+#endif
 	rc = 0;
 	return rc;
 }

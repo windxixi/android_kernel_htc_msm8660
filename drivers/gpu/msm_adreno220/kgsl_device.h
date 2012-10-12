@@ -15,7 +15,9 @@
 
 #include <linux/idr.h>
 #include <linux/wakelock.h>
+#ifdef CONFIG_MACH_SHOOTER
 #include <linux/pm_qos_params.h>
+#endif
 #include <linux/earlysuspend.h>
 
 #include "kgsl.h"
@@ -185,7 +187,9 @@ struct kgsl_device {
 	struct wake_lock idle_wakelock;
 	struct kgsl_pwrscale pwrscale;
 	struct kobject pwrscale_kobj;
+#ifdef CONFIG_MACH_SHOOTER
 	struct pm_qos_request_list pm_qos_req_dma;
+#endif
 	struct work_struct ts_expired_ws;
 	struct list_head events;
 	s64 on_time;

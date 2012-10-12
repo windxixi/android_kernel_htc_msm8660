@@ -1127,7 +1127,9 @@ qup_i2c_probe(struct platform_device *pdev)
 
 	gsbi_mem = NULL;
 	dev_dbg(&pdev->dev, "qup_i2c_probe\n");
+#ifdef CONFIG_MACH_SHOOTER
 	dev_info(&pdev->dev, "%s\n", __func__);
+#endif
 
 	pdata = pdev->dev.platform_data;
 	if (!pdata) {

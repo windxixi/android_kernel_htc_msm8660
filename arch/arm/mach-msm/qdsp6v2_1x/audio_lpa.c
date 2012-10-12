@@ -745,7 +745,14 @@ static long audio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			"timestamp = %lld\n", __func__,
 			audio->bytes_consumed, stats.unused[0], timestamp);
 		if (copy_to_user((void *) arg, &stats, sizeof(stats)))
+#ifdef CONFIG_MACH_SHOOTER_U
+				{
+				pr_debug("%s(%d): copy_to_user return --\n", __func__, __LINE__);
+#endif
 				return -EFAULT;
+#ifdef CONFIG_MACH_SHOOTER_U
+				}
+#endif
 		pr_debug("%s: audio_get_stats command --\n", __func__);
 		return 0;
 	}
@@ -1423,11 +1430,21 @@ static int audio_open(struct inode *inode, struct file *file)
 	audio->device_events = AUDDEV_EVT_STREAM_VOL_CHG | AUDDEV_EVT_DEV_RDY;
 	audio->drv_status &= ~ADRV_STATUS_PAUSE;
 
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_debug("%s: auddev_register_evt_listner[%d] ++\n",
+						__func__,
+						audio->ac->session);
+#endif
 	rc = auddev_register_evt_listner(audio->device_events,
 					AUDDEV_CLNT_DEC,
 					audio->ac->session,
 					lpa_listner,
 					(void *)audio);
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_debug("%s: auddev_register_evt_listner[%d] --\n",
+						__func__,
+						audio->ac->session);
+#endif
 	if (rc) {
 		pr_aud_err("%s: failed to register listner\n", __func__);
 		goto err;
@@ -1447,6 +1464,9 @@ static int audio_open(struct inode *inode, struct file *file)
 	audio->suspend_ctl.node.suspend = audlpa_suspend;
 	audio->suspend_ctl.audio = audio;
 	register_early_suspend(&audio->suspend_ctl.node);
+#ifdef CONFIG_MACH_SHOOTER_U
+	pr_aud_info("%s(%d) \n", __func__, __LINE__);
+#endif
 #endif
 	for (i = 0; i < AUDLPA_EVENT_NUM; i++) {
 		e_node = kmalloc(sizeof(struct audlpa_event), GFP_KERNEL);

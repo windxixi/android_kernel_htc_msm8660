@@ -118,11 +118,12 @@ struct android_usb_platform_data {
 	 */
 	int (*match)(int product_id, int intrsharing);
 
+#ifdef CONFIG_MACH_SHOOTER
 	/* request usb controller/phy reset during function switch
 	 * in some platfrom, we need this behavior to improve the USB stability
 	 */
 	int req_reset_during_switch_func;
-
+#endif
 	/* hold a performance lock while adb_read a maximum data to keep
 	 * adb throughput level
 	 */

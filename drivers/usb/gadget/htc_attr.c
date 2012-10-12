@@ -425,7 +425,9 @@ int android_switch_function(unsigned func)
 	usb_add_config(dev->cdev, &android_config_driver, android_bind_config);
 
 	/* reset usb controller/phy for USB stability */
+#ifdef CONFIG_MACH_SHOOTER
 	if(dev->pdata && dev->pdata->req_reset_during_switch_func)
+#endif	
 		usb_gadget_request_reset(dev->cdev->gadget);
 
 	mdelay(100);
