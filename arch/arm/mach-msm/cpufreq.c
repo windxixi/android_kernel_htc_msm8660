@@ -79,6 +79,9 @@ char cmdline_gov[16] = "conservative";
 char cmdline_gov[16] = "interactive";
 #endif
 
+#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_LAGFREE
+char cmdline_gov[16] = "lagfree";
+#endif
 uint32_t cmdline_maxscroff = 486000;
 bool cmdline_scroff = false;
 
