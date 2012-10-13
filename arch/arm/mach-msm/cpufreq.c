@@ -78,7 +78,9 @@ char cmdline_gov[16] = "conservative";
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 char cmdline_gov[16] = "interactive";
 #endif
-
+#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTASSV2
+char cmdline_gov[16] = "smartassV2";
+#endif
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_LAGFREE
 char cmdline_gov[16] = "lagfree";
 #endif
