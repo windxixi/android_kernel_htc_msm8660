@@ -927,11 +927,11 @@ int processor_name_read_proc(char *page, char **start, off_t off,
 #ifdef CONFIG_CMDLINE_OPTIONS
 	if (cmdline_maxkhz) {
 		p += sprintf(p, "%u", (cmdline_maxkhz/1000));
-		p += sprintf(p, "MHz Anthrax'ed Dual Core");
+		p += sprintf(p, "MHz butter'ed Dual Core");
 	} else {
 #endif
 		p += sprintf(p, "%u", (CONFIG_MSM_CPU_FREQ_MAX/1000));
-		p += sprintf(p, "MHz Anthrax'ed Dual Core");
+		p += sprintf(p, "MHz butter'ed Dual Core");
 #ifdef CONFIG_CMDLINE_OPTIONS
 	}
 #endif
