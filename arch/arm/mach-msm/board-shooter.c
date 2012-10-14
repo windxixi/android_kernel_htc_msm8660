@@ -6745,7 +6745,7 @@ static void __init shooter_fixup(struct machine_desc *desc, struct tag *tags,
 		mi->bank[0].size += 0x10000000;
 }
 
-MACHINE_START(SHOOTER, "shooter")
+MACHINE_START(SHOOTER, "ButteredToast CDMA")
 	.fixup = shooter_fixup,
 	.map_io = shooter_map_io,
 	.reserve = shooter_reserve,
