@@ -6672,7 +6672,7 @@ static void __init shooter_u_fixup(struct machine_desc *desc, struct tag *tags,
 		mi->bank[0].size += 0x10000000;
 }
 
-MACHINE_START(SHOOTER_U, "shooter_u")
+MACHINE_START(SHOOTER_U, "ButteredToast GSM")
 	.fixup = shooter_u_fixup,
 	.map_io = shooter_u_map_io,
 	.reserve = shooter_u_reserve,
