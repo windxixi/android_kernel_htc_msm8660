@@ -18,6 +18,15 @@ config VM_DIRTY_EXPIRE_INT
 	default 3000
 	help
 
+config SYSCTL_SCHED_LAT
+	int "sysctl_sched_latency"
+	default 6000000
+
+config NORM_SYSCTL_SCHED_LAT
+	int "normalized sysctl_sched_latency"
+	default 6000000
+
+
 config SELECT_MEMORY_MODEL
 	def_bool y
 	depends on EXPERIMENTAL || ARCH_SELECT_MEMORY_MODEL
