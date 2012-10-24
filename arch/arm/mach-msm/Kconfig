@@ -1604,6 +1604,18 @@ config CPU_VOLTAGE_TABLE
 config CMDLINE_OPTIONS
 	bool "Enable cmdline khz/gov/maxscroff command parsing"
 	default y
+
+config ANTHRAX_AUDIO
+	bool "Enable BEATS and ANTHRAX audio extensions"
+	depends on MSM_SMP
+	default n
+
+config ANTHRAX_CPU
+	bool "Enable Anthrax CPU multi-tasking driver"
+	depends on MSM_SMP
+	default n
+
+
 config MSM_MPDEC
 	bool "Enable kernel based mpdecision"
 	depends on MSM_SMP
