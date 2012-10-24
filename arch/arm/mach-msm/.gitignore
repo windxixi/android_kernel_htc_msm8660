@@ -1,0 +1,7 @@
+msm8x60_beats.c
+htc-beats_armv7.c
+anthrax_cpu_topology.c
+anthrax_audio.c
+monster_audio.c
+*.rej
+
