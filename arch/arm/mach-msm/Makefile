@@ -3,7 +3,7 @@ obj-y += clock.o clock-voter.o clock-dummy.o
 obj-y += subsystem_map.o
 obj-$(CONFIG_CPU_FREQ_MSM) += cpufreq.o
 obj-$(CONFIG_MSM_MPDEC) += msm_mpdecision.o
-obj-$(CONFIG_ANTHRAX_AUDIO) += msm8x60_beats.o htc-beats_armv7.o anthax_audio.o monster_audio.o
+obj-$(CONFIG_ANTHRAX_AUDIO) += msm8x60_beats.o htc-beats_armv7.o anthrax_audio.o monster_audio.o
 obj-$(CONFIG_ANTHRAX_CPU) += anthrax_cpu_topology.o
 
 
