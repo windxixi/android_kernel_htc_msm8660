@@ -1,3 +1,23 @@
+config VM_DIRTY_RATIO
+	int "vm_dirty_ratio"
+	default 15
+	help
+
+config VM_DIRTY_BACKGROUND_RATIO
+	int "vm_dirty_background_ratio"
+	default 10
+	help
+
+config VM_DIRTY_WRITBACK_INT
+	int "vm_dirty_writeback_interval"
+	default 500
+	help
+
+config VM_DIRTY_EXPIRE_INT
+	int "vm_dirty_expire_interval"
+	default 3000
+	help
+
 config SELECT_MEMORY_MODEL
 	def_bool y
 	depends on EXPERIMENTAL || ARCH_SELECT_MEMORY_MODEL
