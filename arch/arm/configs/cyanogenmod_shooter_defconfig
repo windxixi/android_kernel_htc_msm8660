@@ -1271,7 +1271,7 @@ CONFIG_BLK_DEV_SD=y
 # CONFIG_SCSI_CONSTANTS is not set
 # CONFIG_SCSI_LOGGING is not set
 # CONFIG_SCSI_SCAN_ASYNC is not set
-CONFIG_SCSI_WAIT_SCAN=m
+CONFIG_SCSI_WAIT_SCAN=y
 
 #
 # SCSI Transports
@@ -1326,9 +1326,9 @@ CONFIG_WLAN=y
 # CONFIG_BCM4329 is not set
 CONFIG_BCM4329_FW_PATH="/system/etc/firmware/fw_bcm4329.bin"
 CONFIG_BCM4329_NVRAM_PATH="/proc/calibration"
-CONFIG_BCMDHD=m
-CONFIG_BCMDHD_FW_PATH="/system/etc/firmware/fw_bcmdhd.bin"
-CONFIG_BCMDHD_NVRAM_PATH="/proc/calibration"
+# CONFIG_BCMDHD is not set
+# CONFIG_BCMDHD_FW_PATH="/system/etc/firmware/fw_bcmdhd.bin" is not set
+# CONFIG_BCMDHD_NVRAM_PATH="/proc/calibration" is not set
 # CONFIG_HOSTAP is not set
 # CONFIG_IWM is not set
 # CONFIG_LIBERTAS is not set
