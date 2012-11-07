@@ -28,7 +28,6 @@
 #include "msm_vpe1_8x60.h"
 #include <mach/clk.h>
 #include <linux/clk.h>
-#include <linux/romtype.h>
 
 static atomic_t irq_cnt;
 
@@ -2633,14 +2632,7 @@ static void vfe31_process_camif_sof_irq(void)
 				VFE_CAMIF_COMMAND);
 		}
 	} /* if raw snapshot mode. */
-if (rom_type == ROM_SENSE) 	{
 	vfe31_send_msg_no_payload(MSG_ID_SOF_ACK);
-		printk(KERN_INFO "[ANTHRAX] CAMERA: SENSE MODE");
-							}
-else						{
-		printk(KERN_INFO "[ANTHRAX] CAMERA: AOSP MODE");
-							}
-
 	vfe31_ctrl->vfeFrameId++;
 	CDBG("[CAM] camif_sof_irq, frameId = %d\n", vfe31_ctrl->vfeFrameId);
 

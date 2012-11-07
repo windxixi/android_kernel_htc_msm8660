@@ -19,7 +19,6 @@
 #include <mach/camera-liteon.h>
 #include <mach/msm_reqs.h>
 #include <asm/atomic.h>
-#include <linux/romtype.h>
 
 #include "msm_vfe31_liteon.h"
 #include "msm_vpe1_liteon.h"
@@ -2783,14 +2782,7 @@ static void vfe31_process_camif_sof_irq(void)
 		CDBG("Skip the SOF notification when HFR enabled\n");
 		return;
 	}
-
-if (rom_type == ROM_SENSE) 	{
 	vfe31_send_msg_no_payload(MSG_ID_SOF_ACK);
-		printk(KERN_INFO "[ANTHRAX] CAMERA: SENSE MODE");
-							}
-else						{
-		printk(KERN_INFO "[ANTHRAX] CAMERA: AOSP MODE");
-							}
 
 	vfe31_ctrl->vfeFrameId++;
 	CDBG("camif_sof_irq, frameId = %d\n", vfe31_ctrl->vfeFrameId);
