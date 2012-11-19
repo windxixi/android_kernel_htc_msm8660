@@ -426,7 +426,7 @@ static struct mipi_dsi_platform_data mipi_pdata = {
 #define PWM_MAX				232
 ******* End Original Settings ***************/
 
-#define BRI_SETTING_MIN		10
+#define BRI_SETTING_MIN		3	
 #define BRI_SETTING_DEF		90
 #define BRI_SETTING_MAX		255
 
