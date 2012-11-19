@@ -416,13 +416,22 @@ static struct mipi_dsi_platform_data mipi_pdata = {
 	.vsync_gpio = 28,
 	.dsi_power_save   = mipi_panel_power,
 };
-
+/********* Original Settings ****************
 #define BRI_SETTING_MIN		1
 #define BRI_SETTING_DEF		120
 #define BRI_SETTING_MAX		230
 
 #define PWM_MIN				8
 #define PWM_DEFAULT			91
+#define PWM_MAX				232
+******* End Original Settings ***************/
+
+#define BRI_SETTING_MIN		10
+#define BRI_SETTING_DEF		90
+#define BRI_SETTING_MAX		255
+
+#define PWM_MIN				7
+#define PWM_DEFAULT			75
 #define PWM_MAX				232
 
 unsigned char shrink_br = BRI_SETTING_MAX;
@@ -433,7 +442,7 @@ static unsigned char shooter_shrink_pwm(int val)
 	if (val <= 0) {
 		shrink_br = 0;
 	} else if (val > 0 && (val < BRI_SETTING_MIN)) {
-		shrink_br = PWM_MIN;
+		shrink_br = PWM_MIN+1; // the '+1' is the only change here, per Anryl it is needed to produce a valid value for min brightness.
 	} else if ((val >= BRI_SETTING_MIN) && (val <= BRI_SETTING_DEF)) {
 		shrink_br = (val - BRI_SETTING_MIN) * (PWM_DEFAULT - PWM_MIN) /
 			(BRI_SETTING_DEF - BRI_SETTING_MIN) + PWM_MIN;
